@@ -1,0 +1,24 @@
+.mute-toggle {
+  position: fixed;
+  top: max(env(safe-area-inset-top), 0.75rem);
+  right: max(env(safe-area-inset-right), 0.75rem);
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--text-main);
+  background: color-mix(in oklab, transparent, var(--surface-card) 55%);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  transition:
+    transform 0.2s var(--ease-pop),
+    background 0.3s ease;
+}
+.mute-toggle:hover {
+  transform: scale(1.08);
+}
+.mute-toggle:active {
+  transform: scale(0.94);
+}

@@ -1,122 +1,74 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { lazy, Suspense, useCallback, useEffect } from 'react'
+import { AudioProvider } from './audio/AudioProvider'
+import { useAudio } from './audio/audioContext'
+import { useReducedMotionPref } from './hooks/useReducedMotionPref'
+import { useStoryMachine } from './state/useStoryMachine'
+import { StoryStage } from './components/ui/StoryStage'
+import { MuteToggle } from './components/ui/MuteToggle'
+import { SkipIntro } from './components/ui/SkipIntro'
+import { DarkScene } from './scenes/DarkScene'
 
-function App() {
-  const [count, setCount] = useState(0)
+const PartyScene = lazy(() =>
+  import('./scenes/PartyScene').then((m) => ({ default: m.PartyScene })),
+)
+
+function StoryExperience() {
+  const reduced = useReducedMotionPref()
+  const machine = useStoryMachine(reduced)
+  const audio = useAudio()
+  const { phase, flipped } = machine
+
+  const lit = phase === 'IGNITE' || phase === 'PARTY' || phase === 'LETTER'
+  const showDark = phase !== 'PARTY' && phase !== 'LETTER'
+  const showParty = phase === 'IGNITE' || phase === 'PARTY' || phase === 'LETTER'
+  const inIntro = !lit
+
+  // The one place audio unlocks — synchronous, inside the flip gesture (iOS-safe).
+  const handleFlip = useCallback(() => {
+    audio.unlock()
+    audio.playSfx('switch')
+    machine.flip()
+  }, [audio, machine])
+
+  // Reflect the lit room to the browser chrome.
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="theme-color"]')
+    if (meta) meta.setAttribute('content', lit ? '#f6ead2' : '#14110f')
+  }, [lit])
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <StoryStage lit={lit}>
+      {showDark && (
+        <DarkScene
+          phase={phase}
+          flipped={flipped}
+          reduced={reduced}
+          advance={machine.advance}
+          onFlip={handleFlip}
+        />
+      )}
 
-      <div className="ticks"></div>
+      {showParty && (
+        <Suspense fallback={null}>
+          <PartyScene
+            phase={phase}
+            reduced={reduced}
+            openLetter={machine.openLetter}
+            closeLetter={machine.closeLetter}
+          />
+        </Suspense>
+      )}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <MuteToggle />
+      {inIntro && <SkipIntro onSkip={machine.skip} />}
+    </StoryStage>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <AudioProvider>
+      <StoryExperience />
+    </AudioProvider>
+  )
+}
