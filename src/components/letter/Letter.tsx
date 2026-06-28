@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { config } from '../../config'
-// Pinyon Script ships only with this (lazy) letter chunk.
-import '@fontsource/pinyon-script/latin-400.css'
 import './Letter.css'
 
 /** The opened birthday letter: a portal modal with focus trap + Esc to close. */
@@ -10,7 +8,7 @@ export function Letter({ onClose }: { onClose: () => void }) {
   const sheetRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
 
-  const { greeting, friendName } = config
+  const { greeting } = config
   const paragraphs = Array.isArray(greeting.body) ? greeting.body : [greeting.body]
 
   useEffect(() => {
@@ -77,12 +75,14 @@ export function Letter({ onClose }: { onClose: () => void }) {
             >
               {greeting.signoff}
             </p>
-            <p
-              className="letter__name"
-              style={{ animationDelay: `${0.45 + paragraphs.length * 0.18}s` }}
-            >
-              {friendName}
-            </p>
+            {greeting.signature && (
+              <p
+                className="letter__name"
+                style={{ animationDelay: `${0.45 + paragraphs.length * 0.18}s` }}
+              >
+                {greeting.signature}
+              </p>
+            )}
             <span
               className="letter__heart"
               style={{ animationDelay: `${0.6 + paragraphs.length * 0.18}s` }}

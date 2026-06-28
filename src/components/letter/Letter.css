@@ -105,11 +105,12 @@
 }
 
 .letter__name {
-  font-family: var(--font-script);
-  font-size: clamp(2.4rem, 11vw, 3.6rem);
-  line-height: 1;
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: clamp(2rem, 7.5vw, 2.8rem);
+  line-height: 1.1;
   color: #b23a5b;
-  margin-top: 0.2rem;
+  margin-top: 0.3rem;
 }
 
 .letter__heart {

@@ -36,17 +36,18 @@ export const config: StoryConfig = {
       'รักนะ เพื่อนแก่... เอ๊ย เพื่อนรัก! 🎉',
     ],
     signoff: 'With love,',
+    // ↓ YOUR name — the handwritten signature at the bottom of the letter.
+    signature: 'Good man 😼',
   },
 
   // — Scattered memory stickers. Add `src` to use a real photo; omit for a
   //   drawn placeholder. `together: true` marks a "you + friend" shot. —
   stickers: [
     {
-      caption: 'us together',
-      together: true,
+      caption: 'throwback',
       shape: 'polaroid',
-      tapeStyle: 'cross',
-      src: 'images/IMG_20260628_083455.jpg',
+      tapeStyle: 'single',
+      src: 'images/IMG_20260628_083417.jpg',
     },
     {
       caption: 'the birthday star',
@@ -62,10 +63,11 @@ export const config: StoryConfig = {
       src: 'images/IMG_20260628_083344.jpg',
     },
     {
-      caption: 'throwback',
+      caption: 'us together',
+      together: true,
       shape: 'polaroid',
-      tapeStyle: 'single',
-      src: 'images/IMG_20260628_083417.jpg',
+      tapeStyle: 'cross',
+      src: 'images/IMG_20260628_083455.jpg',
     },
   ],
 

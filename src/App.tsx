@@ -4,7 +4,6 @@ import { useAudio } from './audio/audioContext'
 import { useReducedMotionPref } from './hooks/useReducedMotionPref'
 import { useStoryMachine } from './state/useStoryMachine'
 import { StoryStage } from './components/ui/StoryStage'
-import { MuteToggle } from './components/ui/MuteToggle'
 import { SkipIntro } from './components/ui/SkipIntro'
 import { DarkScene } from './scenes/DarkScene'
 
@@ -59,7 +58,6 @@ function StoryExperience() {
         </Suspense>
       )}
 
-      <MuteToggle />
       {inIntro && <SkipIntro onSkip={machine.skip} />}
     </StoryStage>
   )

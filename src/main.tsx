@@ -1,8 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
-// Self-hosted fonts (latin subsets). Pinyon Script is loaded lazily inside the
-// Letter component so its weight only ships with the letter chunk.
+// Self-hosted fonts (latin subsets).
 import '@fontsource-variable/fraunces/wght.css'
 import '@fontsource/caveat/latin-400.css'
 import '@fontsource/caveat/latin-600.css'

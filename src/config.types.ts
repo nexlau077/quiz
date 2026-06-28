@@ -23,6 +23,8 @@ export interface GreetingConfig {
   /** A single paragraph or several. */
   body: string | string[]
   signoff: string
+  /** Your name — the handwritten signature at the bottom of the letter. */
+  signature?: string
 }
 
 export interface DialogueConfig {

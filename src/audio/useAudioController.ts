@@ -1,16 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { config } from '../config'
 import { asset } from '../lib/paths'
-import { useLocalStorage } from '../hooks/useLocalStorage'
 
 const MUSIC_VOLUME = 0.55
 const SFX_VOLUME = 0.7
 const FADE_MS = 600
 
 export interface AudioApi {
-  /** Whether sound is muted (persisted). */
-  muted: boolean
-  toggleMuted: () => void
   /** Has audio been unlocked by a user gesture yet. */
   ready: boolean
   /** Call SYNCHRONOUSLY inside a click/tap handler (required on iOS). */
@@ -21,12 +17,9 @@ export interface AudioApi {
 
 /** Owns background music + SFX. Autoplay-safe: nothing plays until unlock(). */
 export function useAudioController(): AudioApi {
-  const [muted, setMuted] = useLocalStorage<boolean>('hbd:muted', false)
   const [ready, setReady] = useState(false)
   const musicRef = useRef<HTMLAudioElement | null>(null)
   const fadeRef = useRef(0)
-  const mutedRef = useRef(muted)
-  mutedRef.current = muted
 
   const fadeTo = useCallback((target: number) => {
     const el = musicRef.current
@@ -54,23 +47,13 @@ export function useAudioController(): AudioApi {
     musicRef.current = el
     // play() must be called within the gesture; ignore rejection (missing file).
     el.play()
-      .then(() => fadeTo(mutedRef.current ? 0 : MUSIC_VOLUME))
+      .then(() => fadeTo(MUSIC_VOLUME))
       .catch(() => {
         /* asset missing or blocked — stay silent */
       })
   }, [ready, fadeTo])
 
-  const toggleMuted = useCallback(() => {
-    setMuted(!mutedRef.current)
-  }, [setMuted])
-
-  // Apply mute changes to the running music track.
-  useEffect(() => {
-    if (musicRef.current) fadeTo(muted ? 0 : MUSIC_VOLUME)
-  }, [muted, fadeTo])
-
   const playSfx = useCallback((name: string) => {
-    if (mutedRef.current) return
     const path = config.sfx?.[name]
     const src = asset(path)
     if (!src) return
@@ -90,5 +73,5 @@ export function useAudioController(): AudioApi {
     }
   }, [])
 
-  return { muted, toggleMuted, ready, unlock, playSfx }
+  return { ready, unlock, playSfx }
 }
