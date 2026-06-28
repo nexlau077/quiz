@@ -7,6 +7,7 @@
       "dependencies": {
         "@fontsource-variable/fraunces": "^5.2.9",
         "@fontsource/caveat": "^5.2.8",
+        "@fontsource/itim": "^5.2.7",
         "@fontsource/newsreader": "^5.2.10",
         "canvas-confetti": "^1.9.4",
         "motion": "^12.42.0",
@@ -36,6 +37,8 @@
     "@fontsource-variable/fraunces": ["@fontsource-variable/fraunces@5.2.9", "", {}, "sha512-Y6IjunlN9Ni723np+GIgAaKzCDBrPRrqNi01TZxHs5wtHYROWFM9W6yiT+/gGwSjWIRD18oX17kD/BRWekc/Lw=="],
 
     "@fontsource/caveat": ["@fontsource/caveat@5.2.8", "", {}, "sha512-9fUUfFE2IQFKbx+xOcaeQxxmh8iJguEb8z+j1PeueO4UUx+XfT4pRm/B04ZDvFA794/iRxY/IibmP8ZKtIf4rw=="],
+
+    "@fontsource/itim": ["@fontsource/itim@5.2.7", "", {}, "sha512-ssx6eGnPXJ1grG1/nWjZWvv0bMvCHOf6L7iRqA00Hz0QGukZjETH6tJV7ps/998YdhHFgCQ8KzsBHwQrsNt7EQ=="],
 
     "@fontsource/newsreader": ["@fontsource/newsreader@5.2.10", "", {}, "sha512-TFaYzoFhDqarUyV2yYjgZZEwT4bpaj6sGBnXSnFknQ/QB8/9LzfY6IO9+inHOX4zzPp87Z7/KuG1OI5gr91Q3A=="],
 
