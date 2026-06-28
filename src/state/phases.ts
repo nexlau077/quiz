@@ -26,6 +26,5 @@ export type StoryAction =
   | { type: 'IGNITED' } // pop-up cascade finished
   | { type: 'OPEN_LETTER' }
   | { type: 'CLOSE_LETTER' }
-  | { type: 'SKIP' } // jump straight to PARTY
 
 export const INITIAL_STATE: StoryState = { phase: 'DARK', flipped: false }

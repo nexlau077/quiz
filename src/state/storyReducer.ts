@@ -28,8 +28,6 @@ export function storyReducer(state: StoryState, action: StoryAction): StoryState
       return state.phase === 'PARTY' ? { ...state, phase: 'LETTER' } : state
     case 'CLOSE_LETTER':
       return state.phase === 'LETTER' ? { ...state, phase: 'PARTY' } : state
-    case 'SKIP':
-      return { phase: 'PARTY', flipped: true }
     default:
       return state
   }

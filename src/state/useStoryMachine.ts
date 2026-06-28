@@ -27,7 +27,6 @@ export function useStoryMachine(reducedMotion: boolean) {
   const ignited = useCallback(() => dispatch({ type: 'IGNITED' }), [])
   const openLetter = useCallback(() => dispatch({ type: 'OPEN_LETTER' }), [])
   const closeLetter = useCallback(() => dispatch({ type: 'CLOSE_LETTER' }), [])
-  const skip = useCallback(() => dispatch({ type: 'SKIP' }), [])
 
   return useMemo(
     () => ({
@@ -38,8 +37,7 @@ export function useStoryMachine(reducedMotion: boolean) {
       ignited,
       openLetter,
       closeLetter,
-      skip,
     }),
-    [state.phase, state.flipped, advance, flip, ignited, openLetter, closeLetter, skip],
+    [state.phase, state.flipped, advance, flip, ignited, openLetter, closeLetter],
   )
 }

@@ -4,7 +4,6 @@ import { useAudio } from './audio/audioContext'
 import { useReducedMotionPref } from './hooks/useReducedMotionPref'
 import { useStoryMachine } from './state/useStoryMachine'
 import { StoryStage } from './components/ui/StoryStage'
-import { SkipIntro } from './components/ui/SkipIntro'
 import { DarkScene } from './scenes/DarkScene'
 
 const PartyScene = lazy(() =>
@@ -20,20 +19,12 @@ function StoryExperience() {
   const lit = phase === 'IGNITE' || phase === 'PARTY' || phase === 'LETTER'
   const showDark = phase !== 'PARTY' && phase !== 'LETTER'
   const showParty = phase === 'IGNITE' || phase === 'PARTY' || phase === 'LETTER'
-  const inIntro = !lit
 
   // Audio unlocks here — synchronous, inside the flip gesture (iOS-safe).
   const handleFlip = useCallback(() => {
     audio.unlock()
     audio.playSfx('switch')
     machine.flip()
-  }, [audio, machine])
-
-  // Skipping the intro jumps past the switch, so it must unlock audio itself —
-  // inside this click gesture — or the music never starts on the skip path.
-  const handleSkip = useCallback(() => {
-    audio.unlock()
-    machine.skip()
   }, [audio, machine])
 
   // Reflect the lit room to the browser chrome.
@@ -64,8 +55,6 @@ function StoryExperience() {
           />
         </Suspense>
       )}
-
-      {inIntro && <SkipIntro onSkip={handleSkip} />}
     </StoryStage>
   )
 }

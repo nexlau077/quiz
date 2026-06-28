@@ -35,23 +35,32 @@ export function useAudioController(): AudioApi {
   }, [])
 
   const unlock = useCallback(() => {
-    if (ready) return
-    setReady(true)
     if (!config.musicPath) return
     const src = asset(config.musicPath)
     if (!src) return
-    const el = new Audio(src)
-    el.loop = true
-    el.volume = 0
-    el.preload = 'auto'
-    musicRef.current = el
-    // play() must be called within the gesture; ignore rejection (missing file).
+    // Reuse one element across retries so tracks never stack.
+    let el = musicRef.current
+    if (!el) {
+      el = new Audio(src)
+      el.loop = true
+      el.volume = 0
+      el.preload = 'auto'
+      musicRef.current = el
+    }
+    // Already playing (or an attempt is in flight) — nothing to do.
+    if (!el.paused) return
+    // play() must run synchronously inside the gesture (iOS). Some browsers
+    // ignore pointerdown as an audio-unlocking gesture, so if it's rejected we
+    // retry on the next gesture instead of giving up (don't latch `ready`).
     el.play()
-      .then(() => fadeTo(MUSIC_VOLUME))
-      .catch(() => {
-        /* asset missing or blocked — stay silent */
+      .then(() => {
+        setReady(true)
+        fadeTo(MUSIC_VOLUME)
       })
-  }, [ready, fadeTo])
+      .catch(() => {
+        /* not unlocked yet — a later gesture will retry */
+      })
+  }, [fadeTo])
 
   const playSfx = useCallback((name: string) => {
     const path = config.sfx?.[name]
