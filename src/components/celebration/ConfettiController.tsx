@@ -4,23 +4,9 @@ import type { ConfettiIntensity } from '../../config.types'
 import './ConfettiController.css'
 
 const COLORS = ['#e8728c', '#7faa78', '#6db5c9', '#c9a24b', '#ff9d4d', '#9b7ad1', '#fffaf0']
-// Particle budget for the opening splash.
 const COUNTS: Record<ConfettiIntensity, number> = { low: 90, med: 160, high: 240 }
-// Gentle ongoing rain after the splash — a small batch on a timer (NOT every
-// frame) with short-lived particles, so it keeps falling without piling up.
-const RAIN: Record<ConfettiIntensity, { batch: number; everyMs: number }> = {
-  low: { batch: 1, everyMs: 240 },
-  med: { batch: 1, everyMs: 180 },
-  high: { batch: 2, everyMs: 160 },
-}
 
-const rnd = (min: number, max: number) => Math.random() * (max - min) + min
-
-/**
- * Celebration confetti: a one-off splash when the room lights up, then a gentle
- * ongoing shower that keeps drifting down (it keeps running while you scroll).
- * The shower is rate-limited and uses short-lived particles to stay light.
- */
+/** Fires a celebratory confetti burst once, when the room lights up. */
 export function ConfettiController({
   reduced,
   intensity = 'high',
@@ -34,22 +20,15 @@ export function ConfettiController({
     const canvas = canvasRef.current
     if (!canvas) return
 
-    // useWorker: true is what keeps the confetti animating in an OffscreenCanvas
-    // on a worker thread, so the shower never stutters or pauses while the main
-    // thread is busy handling a scroll. resize: true lets the library size the
-    // backing store to clientWidth/Height (1x — no devicePixelRatio blow-up).
     const fire = confetti.create(canvas, { resize: true, useWorker: true })
     let raf = 0
-    let rainTimer = 0
 
-    // Custom paper shapes (★ + ♥) mixed with default squares/circles.
+    // Custom paper shapes (★ + ♥) alongside default squares.
     let shapes: confetti.Shape[] | undefined
     try {
       shapes = [
-        confetti.shapeFromText({ text: '★', scalar: 1.8 }),
-        confetti.shapeFromText({ text: '♥', scalar: 1.8 }),
-        'square',
-        'circle',
+        confetti.shapeFromText({ text: '★', scalar: 2 }),
+        confetti.shapeFromText({ text: '♥', scalar: 2 }),
       ]
     } catch {
       shapes = undefined
@@ -69,7 +48,7 @@ export function ConfettiController({
 
     const count = COUNTS[intensity]
 
-    // ── 1. The opening splash (central pop + big shape burst + side cannons) ──
+    // central pop
     fire({
       particleCount: count,
       spread: 110,
@@ -80,6 +59,7 @@ export function ConfettiController({
       colors: COLORS,
       shapes,
     })
+    // big shape burst
     fire({
       particleCount: Math.round(count * 0.35),
       spread: 130,
@@ -90,8 +70,9 @@ export function ConfettiController({
       shapes,
     })
 
+    // streaming side cannons for ~900ms
     const end = performance.now() + 900
-    const cannons = () => {
+    const frame = () => {
       fire({
         particleCount: 5,
         angle: 60,
@@ -110,48 +91,12 @@ export function ConfettiController({
         colors: COLORS,
         shapes,
       })
-      if (performance.now() < end) raf = requestAnimationFrame(cannons)
+      if (performance.now() < end) raf = requestAnimationFrame(frame)
     }
-    raf = requestAnimationFrame(cannons)
-
-    // ── 2. The gentle ongoing rain (rate-limited, short-lived) ──
-    const { batch, everyMs } = RAIN[intensity]
-    const startRain = () => {
-      if (rainTimer) return
-      rainTimer = window.setInterval(() => {
-        for (let i = 0; i < batch; i++) {
-          fire({
-            particleCount: 1,
-            startVelocity: 0,
-            // Opacity fades linearly as tick/ticks → 1, so the particle must
-            // reach the bottom while plenty of its ticks remain or it vanishes
-            // mid-screen. It falls ~gravity*3 px/frame over a canvas that's one
-            // viewport tall; this ticks/gravity pair lands it at the bottom of a
-            // typical viewport at ~40-55% opacity, then it fades off-screen.
-            ticks: 440,
-            origin: { x: Math.random(), y: rnd(-0.2, 0) },
-            colors: COLORS,
-            shapes,
-            gravity: rnd(1.1, 1.6),
-            scalar: rnd(0.7, 1.2),
-            drift: rnd(-0.5, 0.5),
-          })
-        }
-      }, everyMs)
-    }
-    const stopRain = () => {
-      window.clearInterval(rainTimer)
-      rainTimer = 0
-    }
-    // Don't keep the canvas redrawing when the page isn't visible.
-    const onVisibility = () => (document.hidden ? stopRain() : startRain())
-    document.addEventListener('visibilitychange', onVisibility)
-    startRain()
+    raf = requestAnimationFrame(frame)
 
     return () => {
       cancelAnimationFrame(raf)
-      stopRain()
-      document.removeEventListener('visibilitychange', onVisibility)
       fire.reset()
     }
   }, [reduced, intensity])
