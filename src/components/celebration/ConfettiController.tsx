@@ -23,13 +23,19 @@ export function ConfettiController({
     const fire = confetti.create(canvas, { resize: true, useWorker: true })
     let raf = 0
 
-    // Custom paper shapes (★ + ♥) alongside default squares.
+    // Vector shapes only (built-in star + an SVG heart path + squares/circles).
+    // NB: we deliberately avoid shapeFromText('★'/'♥') — those render to a
+    // *bitmap* that the COLORS palette can't recolor, so the glyph keeps the
+    // platform emoji-font's own pixels: colourful on desktop, but plain black on
+    // mobile (Android/iOS render U+2605/U+2665 as monochrome text). Path and
+    // built-in shapes are filled with the confetti colour, so they stay pink &
+    // consistent everywhere.
     let shapes: confetti.Shape[] | undefined
     try {
-      shapes = [
-        confetti.shapeFromText({ text: '★', scalar: 2 }),
-        confetti.shapeFromText({ text: '♥', scalar: 2 }),
-      ]
+      const heart = confetti.shapeFromPath({
+        path: 'M167 72c19,-38 37,-56 75,-56 42,0 76,33 76,75 0,76 -76,151 -151,227 -76,-76 -151,-151 -151,-227 0,-42 33,-75 75,-75 38,0 57,18 76,56z',
+      })
+      shapes = ['star', heart, 'square', 'circle']
     } catch {
       shapes = undefined
     }
