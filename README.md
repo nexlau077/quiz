@@ -52,34 +52,30 @@ the layout stays identical when the real photo is added later.
 
 ```bash
 bun install
-bun run dev        # http://localhost:5173/
+bun run dev        # http://localhost:5173/      (dev is served at root)
 bun run build      # tsc -b && vite build
-bun run preview    # serve the production build locally
+bun run preview    # http://localhost:4173/quiz/  (mirrors production)
 bun run lint       # oxlint
 ```
 
 ## Deploy (GitHub Pages)
 
-The site is built to serve from the **domain root** (`base: '/'` in
-[`vite.config.ts`](vite.config.ts)). On GitHub Pages that means you must serve it
-at a root URL — one of:
+This is a **project site** served under the repo sub-path, so the production
+build uses `base: '/quiz/'` (see [`vite.config.ts`](vite.config.ts)). It goes live
+at `https://<username>.github.io/quiz/`. If you rename the repo, update the
+production `base` string to `'/<repo>/'` to match, or assets will 404.
 
-- **User/org site** — name the repo `<username>.github.io`. It goes live at
-  `https://<username>.github.io/`.
-- **Custom domain** — add a `public/CNAME` file containing your domain, then set
-  it under **Settings → Pages → Custom domain** and point DNS at GitHub.
-
-Then:
-
-1. Push to the `main` branch.
-2. In the repo: **Settings → Pages → Build and deployment → Source = "GitHub
-   Actions"** (one-time).
+1. In the repo: **Settings → Pages → Build and deployment → Source = "GitHub
+   Actions"** (one-time). **This is required** — if Source is left as "Deploy from
+   a branch", Pages serves the raw source (`/src/main.tsx`) instead of the build
+   and the page renders blank.
+2. Push to the `main` branch.
 3. The included workflow ([.github/workflows/deploy.yml](.github/workflows/deploy.yml))
-   builds with Bun and deploys automatically.
+   builds with Bun and deploys `dist/` automatically.
 
-> If you instead keep this as a **project site** (repo served under
-> `https://<username>.github.io/<repo>/`), set `base` to `'/<repo>/'` in
-> [`vite.config.ts`](vite.config.ts), otherwise assets will 404.
+> Want a root URL (`https://<username>.github.io/` with no `/quiz/`) instead?
+> Rename the repo to `<username>.github.io`, or add a custom domain via
+> `public/CNAME` — then set the production `base` back to `'/'`.
 
 ## Notes
 
