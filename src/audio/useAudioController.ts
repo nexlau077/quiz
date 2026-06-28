@@ -73,8 +73,20 @@ export function useAudioController(): AudioApi {
     })
   }, [])
 
-  // Cleanup on unmount (StrictMode-safe).
+  // Prime the music element during the intro so play() is instant on flip
+  // (the file buffers while the dark scene plays), then tidy up on unmount.
   useEffect(() => {
+    if (config.musicPath && !musicRef.current) {
+      const src = asset(config.musicPath)
+      if (src) {
+        const el = new Audio(src)
+        el.loop = true
+        el.volume = 0
+        el.preload = 'auto'
+        el.load() // begin buffering now, while the dark intro is on screen
+        musicRef.current = el
+      }
+    }
     return () => {
       window.clearInterval(fadeRef.current)
       musicRef.current?.pause()

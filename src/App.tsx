@@ -5,6 +5,7 @@ import { useReducedMotionPref } from './hooks/useReducedMotionPref'
 import { useStoryMachine } from './state/useStoryMachine'
 import { StoryStage } from './components/ui/StoryStage'
 import { DarkScene } from './scenes/DarkScene'
+import { preloadPartyAssets } from './lib/preload'
 
 const PartyScene = lazy(() =>
   import('./scenes/PartyScene').then((m) => ({ default: m.PartyScene })),
@@ -26,6 +27,12 @@ function StoryExperience() {
     audio.playSfx('switch')
     machine.flip()
   }, [audio, machine])
+
+  // Warm every party asset while the dark intro plays, so flipping the switch
+  // reveals the party (photos, code, music) with no delay.
+  useEffect(() => {
+    preloadPartyAssets()
+  }, [])
 
   // Reflect the lit room to the browser chrome.
   useEffect(() => {
