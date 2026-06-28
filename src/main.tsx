@@ -9,6 +9,10 @@ import '@fontsource/caveat/latin-700.css'
 import '@fontsource/newsreader/latin-400.css'
 import '@fontsource/newsreader/latin-500.css'
 import '@fontsource/newsreader/latin-400-italic.css'
+// Itim — a round, playful handwriting face that covers Thai + Latin, so the
+// Thai greeting and the friend's name read cute instead of stiff-serif.
+import '@fontsource/itim/latin-400.css'
+import '@fontsource/itim/thai-400.css'
 
 import './styles/theme.css'
 import './styles/base.css'

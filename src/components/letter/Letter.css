@@ -89,9 +89,11 @@
 }
 
 .letter__line {
-  font-family: var(--font-serif);
-  font-size: clamp(1.05rem, 4.2vw, 1.3rem);
-  line-height: 1.6;
+  font-family: var(--font-cute);
+  /* Itim runs a touch smaller on the body than Newsreader, so nudge it up a bit
+     and give Thai diacritics a little more line height to breathe. */
+  font-size: clamp(1.15rem, 4.7vw, 1.45rem);
+  line-height: 1.75;
   color: var(--ink, #3a2c22);
   margin-bottom: 0.85rem;
 }

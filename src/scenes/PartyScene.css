@@ -44,11 +44,11 @@
   text-transform: lowercase;
 }
 .party-scene__title {
-  font-family: var(--font-display);
-  font-weight: 600;
+  font-family: var(--font-cute);
+  font-weight: 400;
   font-optical-sizing: auto;
   font-size: clamp(2.6rem, 12vw, 5rem);
-  line-height: 0.95;
+  line-height: 1.05;
   color: var(--ink, #3a2c22);
   letter-spacing: -0.01em;
   text-wrap: balance;
