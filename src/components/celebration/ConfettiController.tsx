@@ -34,22 +34,11 @@ export function ConfettiController({
     const canvas = canvasRef.current
     if (!canvas) return
 
-    // Cap the backing-store resolution. A full-screen fixed canvas that
-    // animates non-stop is composited on every scroll; at full devicePixelRatio
-    // (4x the pixels on a 2x display) that clear+redraw is what makes scrolling
-    // feel heavy. 1.5 keeps it crisp while roughly halving the per-frame cost.
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
-    const setSize = () => {
-      canvas.width = Math.floor(window.innerWidth * dpr)
-      canvas.height = Math.floor(window.innerHeight * dpr)
-    }
-    setSize()
-    window.addEventListener('resize', setSize)
-
-    // We size the canvas ourselves (resize: false). Worker mode is dropped
-    // because it requires resize:true / OffscreenCanvas transfer, which fights
-    // the manual sizing above.
-    const fire = confetti.create(canvas, { resize: false, useWorker: false })
+    // useWorker: true is what keeps the confetti animating in an OffscreenCanvas
+    // on a worker thread, so the shower never stutters or pauses while the main
+    // thread is busy handling a scroll. resize: true lets the library size the
+    // backing store to clientWidth/Height (1x — no devicePixelRatio blow-up).
+    const fire = confetti.create(canvas, { resize: true, useWorker: true })
     let raf = 0
     let rainTimer = 0
 
@@ -75,10 +64,7 @@ export function ConfettiController({
         origin: { y: 0.35 },
         colors: COLORS,
       })
-      return () => {
-        window.removeEventListener('resize', setSize)
-        fire.reset()
-      }
+      return () => fire.reset()
     }
 
     const count = COUNTS[intensity]
@@ -138,15 +124,15 @@ export function ConfettiController({
             particleCount: 1,
             startVelocity: 0,
             // Opacity fades linearly as tick/ticks → 1, so the particle must
-            // reach the bottom well before its ticks run out or it vanishes
-            // mid-screen. Falls ~gravity*3 px/frame; the canvas is innerHeight
-            // *1.5 px tall (DPR cap), so we need a generous ticks budget paired
-            // with a brisker gravity to land it at the bottom still visible.
-            ticks: 420,
+            // reach the bottom while plenty of its ticks remain or it vanishes
+            // mid-screen. It falls ~gravity*3 px/frame over a canvas that's one
+            // viewport tall; this ticks/gravity pair lands it at the bottom of a
+            // typical viewport at ~40-55% opacity, then it fades off-screen.
+            ticks: 440,
             origin: { x: Math.random(), y: rnd(-0.2, 0) },
             colors: COLORS,
             shapes,
-            gravity: rnd(1.4, 1.9),
+            gravity: rnd(1.1, 1.6),
             scalar: rnd(0.7, 1.2),
             drift: rnd(-0.5, 0.5),
           })
@@ -165,7 +151,6 @@ export function ConfettiController({
     return () => {
       cancelAnimationFrame(raf)
       stopRain()
-      window.removeEventListener('resize', setSize)
       document.removeEventListener('visibilitychange', onVisibility)
       fire.reset()
     }
