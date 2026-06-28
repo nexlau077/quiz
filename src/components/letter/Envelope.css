@@ -53,8 +53,10 @@
   inset: 0;
   border-radius: 8px;
   background:
-    linear-gradient(to bottom right, transparent 49.4%, rgba(120, 90, 55, 0.35) 50%) bottom left / 50% 100% no-repeat,
-    linear-gradient(to bottom left, transparent 49.4%, rgba(120, 90, 55, 0.35) 50%) bottom right / 50% 100% no-repeat;
+    linear-gradient(to bottom right, transparent 49.4%, rgba(120, 90, 55, 0.35) 50%) bottom left /
+      50% 100% no-repeat,
+    linear-gradient(to bottom left, transparent 49.4%, rgba(120, 90, 55, 0.35) 50%) bottom right /
+      50% 100% no-repeat;
 }
 
 /* top flap */

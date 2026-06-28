@@ -104,8 +104,13 @@
   animation: switch-bob 2.4s ease-in-out infinite;
 }
 @keyframes switch-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .light-switch:not(.is-on) .light-switch__plate {

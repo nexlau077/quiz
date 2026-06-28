@@ -11,11 +11,11 @@ import type { StoryConfig } from './config.types'
 
 export const config: StoryConfig = {
   // — Who this is for —
-  friendName: 'My Friend',
-  age: 21,
+  friendName: 'Pawa Babi 🐖🐷',
+  age: 20,
 
   // — Hero photo (centre stage). Omit `heroPhoto` to use the placeholder.
-  // heroPhoto: 'photos/hero.jpg',
+  heroPhoto: 'images/main_photo.jpg',
 
   // — Candles on the cake —
   candleCount: 5,
@@ -29,11 +29,11 @@ export const config: StoryConfig = {
 
   // — The letter inside the envelope —
   greeting: {
-    salutation: 'To my dearest friend,',
+    salutation: 'To Human that live far away 🐖,',
     body: [
-      'Happy birthday!',
-      'Thank you for always being there — through the bright days and the dark ones.',
-      'May all your dreams light up one by one, just like these candles.',
+      'สุขสันต์วันเกิดนะเพื่อนรัก! 🎂',
+      'ขอให้รวยๆ ซวยๆ ไปไกลๆ มีเงินมีทองกองท่วมหัว หน้าเด็กลงทุกปี แต่อายุไม่ลงนะจ๊ะ 555 ขอให้สุขภาพแข็งแรง กินเท่าไหร่ก็ไม่อ้วน 😂',
+      'รักนะ เพื่อนแก่... เอ๊ย เพื่อนรัก! 🎉',
     ],
     signoff: 'With love,',
   },
@@ -41,17 +41,37 @@ export const config: StoryConfig = {
   // — Scattered memory stickers. Add `src` to use a real photo; omit for a
   //   drawn placeholder. `together: true` marks a "you + friend" shot. —
   stickers: [
-    { caption: 'us together', together: true, shape: 'polaroid', tapeStyle: 'cross' },
-    { caption: 'the birthday star', shape: 'polaroid', tapeStyle: 'single' },
-    { caption: 'our adventure', together: true, shape: 'torn', tapeStyle: 'tack' },
-    { caption: 'throwback', shape: 'polaroid', tapeStyle: 'single' },
-    { caption: 'good times', together: true, shape: 'torn', tapeStyle: 'cross' },
-    { caption: 'memories', shape: 'circle', tapeStyle: 'tack' },
+    {
+      caption: 'us together',
+      together: true,
+      shape: 'polaroid',
+      tapeStyle: 'cross',
+      src: 'images/IMG_20260628_083455.jpg',
+    },
+    {
+      caption: 'the birthday star',
+      shape: 'polaroid',
+      tapeStyle: 'single',
+      src: 'images/IMG_20260628_083558.jpg',
+    },
+    {
+      caption: 'our adventure',
+      together: true,
+      shape: 'torn',
+      tapeStyle: 'tack',
+      src: 'images/IMG_20260628_083344.jpg',
+    },
+    {
+      caption: 'throwback',
+      shape: 'polaroid',
+      tapeStyle: 'single',
+      src: 'images/IMG_20260628_083417.jpg',
+    },
   ],
 
   // — Audio. Drop files in /public/audio and uncomment. Music only starts after
   //   the switch is flipped (a user gesture), which is required on iOS. —
-  // musicPath: 'audio/celebration.mp3',
+  musicPath: 'audio/thai_hbd_song.mp3',
   // sfx: {
   //   switch: 'audio/click.mp3',
   //   pop: 'audio/pop.mp3',

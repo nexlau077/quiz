@@ -10,8 +10,7 @@
 .diorama__wall {
   position: absolute;
   inset: -5% -5% 26% -5%;
-  background:
-    radial-gradient(120% 80% at 50% 0%, #fff6e2 0%, #f3e2bf 55%, #e9d2a6 100%);
+  background: radial-gradient(120% 80% at 50% 0%, #fff6e2 0%, #f3e2bf 55%, #e9d2a6 100%);
   transform: translate(calc(var(--px, 0) * -10px), calc(var(--py, 0) * -7px));
   transition: transform 0.3s ease-out;
 }

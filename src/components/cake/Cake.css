@@ -12,7 +12,9 @@
   font-size: clamp(1.1rem, 4.5vw, 1.5rem);
   color: var(--ink, #3a2c22);
   margin-bottom: 0.4rem;
-  transition: color 0.3s ease, transform 0.3s var(--ease-pop);
+  transition:
+    color 0.3s ease,
+    transform 0.3s var(--ease-pop);
 }
 .cake__hint.is-wish {
   color: #c9772f;
@@ -107,8 +109,14 @@
     radial-gradient(circle, var(--rose) 2px, transparent 2.5px),
     radial-gradient(circle, var(--sky) 2px, transparent 2.5px),
     radial-gradient(circle, var(--sage) 2px, transparent 2.5px);
-  background-size: 38px 38px, 46px 46px, 30px 30px;
-  background-position: 6px 14px, 22px 26px, 30px 8px;
+  background-size:
+    38px 38px,
+    46px 46px,
+    30px 30px;
+  background-position:
+    6px 14px,
+    22px 26px,
+    30px 8px;
   opacity: 0.8;
 }
 

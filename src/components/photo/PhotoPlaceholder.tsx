@@ -8,7 +8,10 @@ interface PhotoPlaceholderProps {
 }
 
 /** Drawn stand-in shown until a real photo is dropped into config. */
-export function PhotoPlaceholder({ label = 'your photo', together = false }: PhotoPlaceholderProps) {
+export function PhotoPlaceholder({
+  label = 'your photo',
+  together = false,
+}: PhotoPlaceholderProps) {
   return (
     <div className="photo-ph" aria-hidden="true">
       <svg viewBox="0 0 100 100" className="photo-ph__art" preserveAspectRatio="xMidYMid slice">

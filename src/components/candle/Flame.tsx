@@ -44,10 +44,7 @@ export function Flame({ size = 36, lit = true, className = '' }: FlameProps) {
             </radialGradient>
           </defs>
           {/* teardrop flame */}
-          <path
-            d="M12 1C12 1 4 11 4 22a8 8 0 0 0 16 0C20 13 12 1 12 1Z"
-            fill="url(#flameGrad)"
-          />
+          <path d="M12 1C12 1 4 11 4 22a8 8 0 0 0 16 0C20 13 12 1 12 1Z" fill="url(#flameGrad)" />
           {/* blue-hot base */}
           <ellipse cx="12" cy="27" rx="3.4" ry="6" fill="#9ad7ff" opacity="0.55" />
           {/* bright core */}

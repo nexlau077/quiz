@@ -62,11 +62,22 @@ export function Balloon({
               <stop offset="100%" stopColor={color} />
             </radialGradient>
           </defs>
-          <ellipse cx="30" cy="34" rx="26" ry="32" fill={`url(#bg-${color.replace(/[^a-z0-9]/gi, '')})`} />
+          <ellipse
+            cx="30"
+            cy="34"
+            rx="26"
+            ry="32"
+            fill={`url(#bg-${color.replace(/[^a-z0-9]/gi, '')})`}
+          />
           {/* knot */}
           <path d="M27 64 L33 64 L30 70 Z" fill={color} />
           {/* string */}
-          <path d="M30 70 Q 36 80 28 90" stroke="rgba(90,70,45,0.6)" strokeWidth="1.2" fill="none" />
+          <path
+            d="M30 70 Q 36 80 28 90"
+            stroke="rgba(90,70,45,0.6)"
+            strokeWidth="1.2"
+            fill="none"
+          />
           {/* highlight */}
           <ellipse cx="22" cy="22" rx="6" ry="9" fill="rgba(255,255,255,0.55)" />
         </svg>

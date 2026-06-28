@@ -14,7 +14,13 @@ export const Envelope = forwardRef<HTMLButtonElement, EnvelopeProps>(function En
   return (
     <div className="envelope-wrap">
       <span className="envelope__tag">open me</span>
-      <button type="button" ref={ref} className="envelope" aria-label="Open the letter" onClick={onOpen}>
+      <button
+        type="button"
+        ref={ref}
+        className="envelope"
+        aria-label="Open the letter"
+        onClick={onOpen}
+      >
         <span className="envelope__body">
           <span className="envelope__flap" />
           <span className="envelope__pocket" />

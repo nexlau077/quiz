@@ -1,8 +1,7 @@
 .dark-backdrop {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(120% 90% at 50% 42%, #241c15 0%, #16120e 55%, #0d0a08 100%);
+  background: radial-gradient(120% 90% at 50% 42%, #241c15 0%, #16120e 55%, #0d0a08 100%);
   overflow: hidden;
 }
 

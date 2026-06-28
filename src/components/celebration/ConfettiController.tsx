@@ -36,7 +36,13 @@ export function ConfettiController({
 
     if (reduced) {
       // a single gentle sprinkle
-      fire({ particleCount: 50, spread: 75, startVelocity: 28, origin: { y: 0.35 }, colors: COLORS })
+      fire({
+        particleCount: 50,
+        spread: 75,
+        startVelocity: 28,
+        origin: { y: 0.35 },
+        colors: COLORS,
+      })
       return () => fire.reset()
     }
 
@@ -67,8 +73,24 @@ export function ConfettiController({
     // streaming side cannons for ~900ms
     const end = performance.now() + 900
     const frame = () => {
-      fire({ particleCount: 5, angle: 60, spread: 60, startVelocity: 45, origin: { x: 0, y: 0.7 }, colors: COLORS, shapes })
-      fire({ particleCount: 5, angle: 120, spread: 60, startVelocity: 45, origin: { x: 1, y: 0.7 }, colors: COLORS, shapes })
+      fire({
+        particleCount: 5,
+        angle: 60,
+        spread: 60,
+        startVelocity: 45,
+        origin: { x: 0, y: 0.7 },
+        colors: COLORS,
+        shapes,
+      })
+      fire({
+        particleCount: 5,
+        angle: 120,
+        spread: 60,
+        startVelocity: 45,
+        origin: { x: 1, y: 0.7 },
+        colors: COLORS,
+        shapes,
+      })
       if (performance.now() < end) raf = requestAnimationFrame(frame)
     }
     raf = requestAnimationFrame(frame)

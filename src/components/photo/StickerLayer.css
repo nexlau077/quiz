@@ -9,7 +9,9 @@
   position: absolute;
   pointer-events: auto;
   animation: scrap-settle 0.9s var(--ease-soft) both;
-  transition: transform 0.3s var(--ease-pop), z-index 0s;
+  transition:
+    transform 0.3s var(--ease-pop),
+    z-index 0s;
 }
 
 /* lift a sticker on hover/focus for a peelable feel */

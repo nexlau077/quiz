@@ -14,9 +14,7 @@
   overflow-y: auto;
   overflow-x: clip;
   -webkit-overflow-scrolling: touch;
-  padding:
-    max(env(safe-area-inset-top), 3vh) 1rem
-    max(env(safe-area-inset-bottom), 3vh);
+  padding: max(env(safe-area-inset-top), 3vh) 1rem max(env(safe-area-inset-bottom), 3vh);
 }
 
 /* margin:auto centres when short, but stays fully scrollable when tall */

@@ -58,7 +58,7 @@ export function StickerLayer({ breakpoint }: { breakpoint: Breakpoint }) {
                 top: slot.y,
                 width: `${Math.round(base * slot.scale)}px`,
                 animationDelay: `${0.15 + i * 0.12}s`,
-                '--spin': `${(s.rotation ?? (i % 2 ? 6 : -6))}deg`,
+                '--spin': `${s.rotation ?? (i % 2 ? 6 : -6)}deg`,
               } as CSSProperties
             }
           >

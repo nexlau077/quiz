@@ -43,7 +43,9 @@ export function Cake({ candleCount = 5 }: { candleCount?: number }) {
             </span>
             <span
               className="cake__stick"
-              style={{ background: `linear-gradient(90deg, ${CANDLE_COLORS[i % CANDLE_COLORS.length]}, #fff7ea)` }}
+              style={{
+                background: `linear-gradient(90deg, ${CANDLE_COLORS[i % CANDLE_COLORS.length]}, #fff7ea)`,
+              }}
             />
           </button>
         ))}
