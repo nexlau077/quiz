@@ -22,11 +22,18 @@ function StoryExperience() {
   const showParty = phase === 'IGNITE' || phase === 'PARTY' || phase === 'LETTER'
   const inIntro = !lit
 
-  // The one place audio unlocks — synchronous, inside the flip gesture (iOS-safe).
+  // Audio unlocks here — synchronous, inside the flip gesture (iOS-safe).
   const handleFlip = useCallback(() => {
     audio.unlock()
     audio.playSfx('switch')
     machine.flip()
+  }, [audio, machine])
+
+  // Skipping the intro jumps past the switch, so it must unlock audio itself —
+  // inside this click gesture — or the music never starts on the skip path.
+  const handleSkip = useCallback(() => {
+    audio.unlock()
+    machine.skip()
   }, [audio, machine])
 
   // Reflect the lit room to the browser chrome.
@@ -58,7 +65,7 @@ function StoryExperience() {
         </Suspense>
       )}
 
-      {inIntro && <SkipIntro onSkip={machine.skip} />}
+      {inIntro && <SkipIntro onSkip={handleSkip} />}
     </StoryStage>
   )
 }
