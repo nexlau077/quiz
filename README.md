@@ -40,9 +40,9 @@ musicPath: 'audio/celebration.mp3',
 stickers: [{ src: 'photos/us.jpg', caption: 'us together', together: true }],
 ```
 
-Paths are resolved through `asset()` so they work correctly under the GitHub
-Pages sub-path. Leave a path out → a hand-drawn placeholder is shown and the
-layout stays identical when the real photo is added later.
+Paths are resolved through `asset()` so they stay correct no matter what `base`
+the site is served from. Leave a path out → a hand-drawn placeholder is shown and
+the layout stays identical when the real photo is added later.
 
 > Music and sound effects only start **after** the switch is flipped (a user
 > gesture), which is required for autoplay on iOS. A sound on/off toggle is in
@@ -52,23 +52,34 @@ layout stays identical when the real photo is added later.
 
 ```bash
 bun install
-bun run dev        # http://localhost:5173/pawa-birtday/
+bun run dev        # http://localhost:5173/
 bun run build      # tsc -b && vite build
-bun run preview    # serve the production build at the real base path
+bun run preview    # serve the production build locally
 bun run lint       # oxlint
 ```
 
 ## Deploy (GitHub Pages)
 
+The site is built to serve from the **domain root** (`base: '/'` in
+[`vite.config.ts`](vite.config.ts)). On GitHub Pages that means you must serve it
+at a root URL — one of:
+
+- **User/org site** — name the repo `<username>.github.io`. It goes live at
+  `https://<username>.github.io/`.
+- **Custom domain** — add a `public/CNAME` file containing your domain, then set
+  it under **Settings → Pages → Custom domain** and point DNS at GitHub.
+
+Then:
+
 1. Push to the `main` branch.
 2. In the repo: **Settings → Pages → Build and deployment → Source = "GitHub
    Actions"** (one-time).
 3. The included workflow ([.github/workflows/deploy.yml](.github/workflows/deploy.yml))
-   builds with Bun and deploys automatically. The site goes live at
-   `https://<your-username>.github.io/pawa-birtday/`.
+   builds with Bun and deploys automatically.
 
-If you rename the repository, update `base` in
-[`vite.config.ts`](vite.config.ts) to match (`'/<repo-name>/'`).
+> If you instead keep this as a **project site** (repo served under
+> `https://<username>.github.io/<repo>/`), set `base` to `'/<repo>/'` in
+> [`vite.config.ts`](vite.config.ts), otherwise assets will 404.
 
 ## Notes
 

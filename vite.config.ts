@@ -2,8 +2,10 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
-// `base` MUST match the GitHub Pages project-site path so all asset URLs resolve.
+// Served from the domain root ("/"). On GitHub Pages this resolves only for a
+// user/org site (<username>.github.io) or a custom domain; a project-site repo is
+// served under "/<repo>/" and would need that string as `base` instead.
 export default defineConfig({
-  base: '/pawa-birtday/',
+  base: '/',
   plugins: [react()],
 })
